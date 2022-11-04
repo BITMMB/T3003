@@ -1,44 +1,65 @@
 import React from "react";
 import "./Task.css";
+import { Component } from "react";
 
-const Task = () => {
-  return (
-    <ul className="todo-list">
-      <li className="completed">
+export default class Ttem extends Component {
+  state = {
+    editing: false,
+    completed: false,
+  };
+
+  onBtnEditClick = () => {
+    this.setState({
+      editing: true,
+    });
+  };
+  onBtnDoneClick = () => {
+    this.setState(({ completed }) => {
+      return {
+        completed: !completed,
+      };
+    });
+  };
+
+  render() {
+    const { label, onDelited } = this.props;
+
+    const { editing, completed } = this.state;
+
+    let classNames = "";
+    if (editing) {
+      classNames = "editing";
+    } else if (completed) {
+      classNames = "completed";
+    }
+
+    return (
+      <li className={classNames}>
         <div className="view">
-          <input className="toggle" type="checkbox"></input>
+          <input
+            className="toggle"
+            type="checkbox"
+            onClick={this.onBtnDoneClick}
+          ></input>
           <label>
-            <span className="description">Completed task</span>
-            <span className="created">created 17 seconds ago</span>
-          </label>
-          <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy"></button>
-        </div>
-      </li>
-      <li className="editing">
-        <div className="view">
-          <input className="toggle" type="checkbox"></input>
-          <label>
-            <span className="description">Editing task</span>
+            <span className="description">{label}</span>
             <span className="created">created 5 minutes ago</span>
           </label>
-          <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy"></button>
-        </div>
-        <input type="text" className="edit" value="Editing task"></input>
-      </li>
-      <li>
-        <div className="view">
-          <input className="toggle" type="checkbox"></input>
-          <label>
-            <span className="description">Active task</span>
-            <span className="created">created 5 minutes ago</span>
-          </label>
-          <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy"></button>
+          <button
+            className="icon icon-edit"
+            onClick={this.onBtnEditClick}
+          ></button>
+          <button
+            className="icon icon-destroy"
+            onClick={() => {
+              onDelited();
+            }}
+          ></button>
         </div>
       </li>
-    </ul>
-  );
-};
-export default Task;
+    );
+  }
+}
+
+// editing;
+// completed;

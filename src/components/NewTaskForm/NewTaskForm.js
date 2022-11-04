@@ -8,7 +8,7 @@ export const NewTaskForm = () => {
       <input
         className="new-todo"
         placeholder="What needs to be done?"
-        autofocus
+        // autofocus
       ></input>
     </header>
   );

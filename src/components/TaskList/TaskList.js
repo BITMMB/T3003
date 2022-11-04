@@ -3,10 +3,22 @@ import "./TaskList.css";
 import Task from "../Task";
 import Footer from "../Footer";
 
-const TaskList = () => {
+const TaskList = ({ data, onDelited }) => {
+  const element = data.map((item) => {
+    return (
+      <Task
+        {...item}
+        key={item.id}
+        onDelited={() => {
+          onDelited(item.id);
+        }}
+      />
+    );
+  });
+
   return (
     <section className="main">
-      <Task />
+      <ul className="todo-list">{element}</ul>
       <Footer />
     </section>
   );
