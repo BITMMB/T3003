@@ -4,30 +4,32 @@ import { Component } from "react";
 
 export default class Ttem extends Component {
   state = {
-    editing: false,
-    completed: false,
+    label: "",
   };
-
-  onBtnEditClick = () => {
+  onChange = (e) => {
+    e.preventDefault();
     this.setState({
-      editing: true,
-    });
-  };
-  onBtnDoneClick = () => {
-    this.setState(({ completed }) => {
-      return {
-        completed: !completed,
-      };
+      label: e.target.value,
     });
   };
 
   render() {
-    const { label, onDelited } = this.props;
-
-    const { editing, completed } = this.state;
+    const {
+      itemId,
+      label,
+      editing,
+      changeLabel,
+      completed,
+      toggleall,
+      onBtnDoneClick,
+      onBtnEditClick,
+      onBtnDeleteClick,
+    } = this.props;
 
     let classNames = "";
-    if (editing) {
+    if (toggleall) {
+      classNames = "toggle-all";
+    } else if (editing) {
       classNames = "editing";
     } else if (completed) {
       classNames = "completed";
@@ -39,7 +41,9 @@ export default class Ttem extends Component {
           <input
             className="toggle"
             type="checkbox"
-            onClick={this.onBtnDoneClick}
+            onClick={() => {
+              onBtnDoneClick();
+            }}
           ></input>
           <label>
             <span className="description">{label}</span>
@@ -47,19 +51,31 @@ export default class Ttem extends Component {
           </label>
           <button
             className="icon icon-edit"
-            onClick={this.onBtnEditClick}
+            onClick={() => {
+              onBtnEditClick();
+            }}
           ></button>
           <button
             className="icon icon-destroy"
             onClick={() => {
-              onDelited();
+              onBtnDeleteClick();
             }}
           ></button>
         </div>
+
+        <form
+          onSubmit={() => {
+            changeLabel(this.state.label, itemId);
+          }}
+        >
+          <input
+            type="text"
+            className="edit"
+            onChange={this.onChange}
+            defaultValue={label}
+          ></input>
+        </form>
       </li>
     );
   }
 }
-
-// editing;
-// completed;
