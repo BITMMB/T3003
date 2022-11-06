@@ -1,7 +1,20 @@
 import React from "react";
 import "./TasksFilter.css";
+import Proptypes from "prop-types";
 
 export default class TasksFilter extends React.Component {
+  static defaultProps = {
+    showAllItems: () => {},
+    showActiveItems: () => {},
+    showDoneItems: () => {},
+  };
+
+  static propTypes = {
+    showAllItems: Proptypes.func,
+    showActiveItems: Proptypes.func,
+    showDoneItems: Proptypes.func,
+  };
+
   state = {
     all: true,
     active: false,

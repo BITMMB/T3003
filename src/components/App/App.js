@@ -7,33 +7,35 @@ export default class App extends Component {
   state = {
     data: [
       {
-        label: "label1",
+        label: "Сall friends",
         done: false,
         completed: false,
         editing: false,
         toggleall: false,
-        id: 1,
+        id: 1667438871000,
       },
       {
-        label: "label2",
+        label: "Have a beer",
         done: false,
         completed: false,
         editing: false,
         toggleall: false,
-        id: 2,
+        id: 1667538871000,
       },
       {
-        label: "label3",
+        label: "Suffer tomorrow morning",
         done: false,
         completed: false,
         editing: false,
         toggleall: false,
-        id: 3,
+        id: 1667736871000,
       },
     ],
   };
   ///добавление нового элемента
   addNewItem = (label) => {
+    // let d = new Date();
+    // let d = Date.parse(new Date());
     this.setState(({ data }) => {
       let newState = JSON.parse(JSON.stringify(data));
       newState.push({
@@ -42,7 +44,7 @@ export default class App extends Component {
         completed: false,
         editing: false,
         toggleall: false,
-        id: 3,
+        id: Date.parse(new Date()),
       });
       return { data: newState };
     });

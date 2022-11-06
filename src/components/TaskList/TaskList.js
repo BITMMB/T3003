@@ -2,6 +2,7 @@ import React from "react";
 import "./TaskList.css";
 import Task from "../Task";
 import Footer from "../Footer";
+import Proptypes from "prop-types";
 
 const TaskList = ({
   data,
@@ -48,4 +49,31 @@ const TaskList = ({
     </section>
   );
 };
+
+TaskList.defaultProps = {
+  data: {},
+  doneCount: 0,
+  onBtnDeleteClick: () => {},
+  onBtnDeleteDoneClick: () => {},
+  onBtnDoneClick: () => {},
+  onBtnEditClick: () => {},
+  changeLabel: () => {},
+  showAllItems: () => {},
+  showActiveItems: () => {},
+  showDoneItems: () => {},
+};
+
+TaskList.propTypes = {
+  data: Proptypes.arrayOf(Proptypes.object).isRequired,
+  doneCount: Proptypes.number,
+  onBtnDeleteClick: Proptypes.func,
+  onBtnDeleteDoneClick: Proptypes.func,
+  onBtnDoneClick: Proptypes.func,
+  onBtnEditClick: Proptypes.func,
+  changeLabel: Proptypes.func,
+  showAllItems: Proptypes.func,
+  showActiveItems: Proptypes.func,
+  showDoneItems: Proptypes.func,
+};
+
 export default TaskList;
