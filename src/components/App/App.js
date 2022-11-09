@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import "./App.css";
-import NewTaskForm from "../NewTaskForm";
-import TaskList from "../TaskList";
+import React, { Component } from 'react';
+import './App.css';
+import NewTaskForm from '../NewTaskForm';
+import TaskList from '../TaskList';
 
 export default class App extends Component {
   state = {
     data: [
       {
-        label: "Сall friends",
+        label: 'Сall friends',
         done: false,
         completed: false,
         editing: false,
@@ -15,7 +15,7 @@ export default class App extends Component {
         id: 1667438871000,
       },
       {
-        label: "Have a beer",
+        label: 'Have a beer',
         done: false,
         completed: false,
         editing: false,
@@ -23,7 +23,7 @@ export default class App extends Component {
         id: 1667538871000,
       },
       {
-        label: "Suffer tomorrow morning",
+        label: 'Suffer tomorrow morning',
         done: false,
         completed: false,
         editing: false,
@@ -34,8 +34,6 @@ export default class App extends Component {
   };
   ///добавление нового элемента
   addNewItem = (label) => {
-    // let d = new Date();
-    // let d = Date.parse(new Date());
     this.setState(({ data }) => {
       let newState = JSON.parse(JSON.stringify(data));
       newState.push({

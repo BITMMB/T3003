@@ -1,8 +1,10 @@
-import React from "react";
-import "./TaskList.css";
-import Task from "../Task";
-import Footer from "../Footer";
-import Proptypes from "prop-types";
+import React from 'react'
+
+import './TaskList.css'
+import Proptypes from 'prop-types';
+
+import Task from '../Task';
+import Footer from '../Footer';
 
 const TaskList = ({
   data,
@@ -34,7 +36,7 @@ const TaskList = ({
         changeLabel={changeLabel}
       />
     );
-  });
+  })
 
   return (
     <section className="main">
@@ -48,7 +50,7 @@ const TaskList = ({
       />
     </section>
   );
-};
+}
 
 TaskList.defaultProps = {
   data: {},
