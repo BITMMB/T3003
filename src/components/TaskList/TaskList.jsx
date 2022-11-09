@@ -1,12 +1,12 @@
 import React from 'react'
 
 import './TaskList.css'
-import Proptypes from 'prop-types';
+import Proptypes from 'prop-types'
 
-import Task from '../Task';
-import Footer from '../Footer';
+import Task from '../Task'
+import Footer from '../Footer'
 
-const TaskList = ({
+function TaskList({
   data,
   doneCount,
   onBtnDeleteClick,
@@ -17,26 +17,25 @@ const TaskList = ({
   showAllItems,
   showActiveItems,
   showDoneItems,
-}) => {
-  const element = data.map((item) => {
-    return (
-      <Task
-        {...item}
-        key={item.id}
-        itemId={item.id}
-        onBtnDeleteClick={() => {
-          onBtnDeleteClick(item.id);
-        }}
-        onBtnDoneClick={() => {
-          onBtnDoneClick(item.id);
-        }}
-        onBtnEditClick={() => {
-          onBtnEditClick(item.id);
-        }}
-        changeLabel={changeLabel}
-      />
-    );
-  })
+}) {
+  const element = data.map((item) => (
+    <Task
+      {...item}
+      
+      key={item.id}
+      itemId={item.id}
+      onBtnDeleteClick={() => {
+        onBtnDeleteClick(item.id)
+      }}
+      onBtnDoneClick={() => {
+        onBtnDoneClick(item.id)
+      }}
+      onBtnEditClick={() => {
+        onBtnEditClick(item.id)
+      }}
+      changeLabel={changeLabel}
+    />
+  ))
 
   return (
     <section className="main">
@@ -49,7 +48,7 @@ const TaskList = ({
         onBtnDeleteDoneClick={onBtnDeleteDoneClick}
       />
     </section>
-  );
+  )
 }
 
 TaskList.defaultProps = {
@@ -63,10 +62,10 @@ TaskList.defaultProps = {
   showAllItems: () => {},
   showActiveItems: () => {},
   showDoneItems: () => {},
-};
+}
 
 TaskList.propTypes = {
-  data: Proptypes.arrayOf(Proptypes.object).isRequired,
+  data: Proptypes.arrayOf(Proptypes.object),
   doneCount: Proptypes.number,
   onBtnDeleteClick: Proptypes.func,
   onBtnDeleteDoneClick: Proptypes.func,
@@ -76,6 +75,6 @@ TaskList.propTypes = {
   showAllItems: Proptypes.func,
   showActiveItems: Proptypes.func,
   showDoneItems: Proptypes.func,
-};
+}
 
-export default TaskList;
+export default TaskList

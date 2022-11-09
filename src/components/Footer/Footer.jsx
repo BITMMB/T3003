@@ -8,11 +8,13 @@ import TasksFilter from '../TasksFilter'
 function Footer({ doneCount, showAllItems, showActiveItems, showDoneItems, onBtnDeleteDoneClick }) {
   return (
     <footer className="footer">
-      <span className="todo-count">{doneCount}
-{' '}
-items left
-</span>
-      <TasksFilter showAllItems={showAllItems} showActiveItems={showActiveItems} showDoneItems={showDoneItems} />
+      <span className="todo-count">
+        {doneCount}
+        items left
+      </span>
+      <TasksFilter showAllItems={showAllItems}
+        showActiveItems={showActiveItems}
+        showDoneItems={showDoneItems} />
       <button
         className="clear-completed"
         onClick={() => {
