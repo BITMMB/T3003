@@ -3,7 +3,6 @@ import './TasksFilter.css'
 import Proptypes from 'prop-types'
 
 export default class TasksFilter extends React.Component {
-
   constructor() {
     super()
     this.state = {
@@ -73,14 +72,14 @@ export default class TasksFilter extends React.Component {
     )
   }
 }
-  TasksFilter.defaultProps = {
-    showAllItems: () => {},
-    showActiveItems: () => {},
-    showDoneItems: () => {},
-  }
+TasksFilter.defaultProps = {
+  showAllItems: () => {},
+  showActiveItems: () => {},
+  showDoneItems: () => {},
+}
 
-  TasksFilter.propTypes = {
-    showAllItems: Proptypes.func,
-    showActiveItems: Proptypes.func,
-    showDoneItems: Proptypes.func,
-  }
+TasksFilter.propTypes = {
+  showAllItems: Proptypes.func,
+  showActiveItems: Proptypes.func,
+  showDoneItems: Proptypes.func,
+}

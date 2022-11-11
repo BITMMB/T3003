@@ -1,5 +1,4 @@
 import React from 'react'
-
 import './TaskList.css'
 import Proptypes from 'prop-types'
 
@@ -21,7 +20,6 @@ function TaskList({
   const element = data.map((item) => (
     <Task
       {...item}
-      
       key={item.id}
       itemId={item.id}
       onBtnDeleteClick={() => {

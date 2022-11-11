@@ -2,10 +2,7 @@ import React from 'react'
 import './NewTaskForm.css'
 import Proptypes from 'prop-types'
 
-
-
 export default class NewTaskForm extends React.Component {
-
   state = {
     label: '',
   }
@@ -41,10 +38,10 @@ export default class NewTaskForm extends React.Component {
     )
   }
 }
- NewTaskForm.defaultProps = {
-    addNewItem: () => {},
-  }
+NewTaskForm.defaultProps = {
+  addNewItem: () => {},
+}
 
- NewTaskForm.propTypes = {
-    addNewItem: Proptypes.func,
-  }
+NewTaskForm.propTypes = {
+  addNewItem: Proptypes.func,
+}

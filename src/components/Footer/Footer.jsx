@@ -1,5 +1,4 @@
 import React from 'react'
-
 import './Footer.css'
 import Proptypes from 'prop-types'
 
@@ -12,9 +11,7 @@ function Footer({ doneCount, showAllItems, showActiveItems, showDoneItems, onBtn
         {doneCount}
         items left
       </span>
-      <TasksFilter showAllItems={showAllItems}
-        showActiveItems={showActiveItems}
-        showDoneItems={showDoneItems} />
+      <TasksFilter showAllItems={showAllItems} showActiveItems={showActiveItems} showDoneItems={showDoneItems} />
       <button
         className="clear-completed"
         onClick={() => {

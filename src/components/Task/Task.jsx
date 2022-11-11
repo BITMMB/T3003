@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { formatDistanceToNow } from 'date-fns'
 
 export default class Ttem extends Component {
-
   constructor() {
     super()
     this.state = {
@@ -81,26 +80,26 @@ export default class Ttem extends Component {
     )
   }
 }
-  Ttem.defaultProps = {
-    itemId: 0,
-    label: '',
-    editing: false,
-    changeLabel: () => {},
-    completed: false,
-    toggleall: false,
-    onBtnDoneClick: () => {},
-    onBtnEditClick: () => {},
-    onBtnDeleteClick: () => {},
-  }
+Ttem.defaultProps = {
+  itemId: 0,
+  label: '',
+  editing: false,
+  changeLabel: () => {},
+  completed: false,
+  toggleall: false,
+  onBtnDoneClick: () => {},
+  onBtnEditClick: () => {},
+  onBtnDeleteClick: () => {},
+}
 
 Ttem.propTypes = {
-    itemId:PropTypes.number,
-    label: PropTypes.string,
-    editing: PropTypes.bool,
-    changeLabel: PropTypes.func,
-    completed: PropTypes.bool,
-    toggleall: PropTypes.bool,
-    onBtnDoneClick: PropTypes.func,
-    onBtnEditClick: PropTypes.func,
-    onBtnDeleteClick: PropTypes.func,
-  }
+  itemId: PropTypes.number,
+  label: PropTypes.string,
+  editing: PropTypes.bool,
+  changeLabel: PropTypes.func,
+  completed: PropTypes.bool,
+  toggleall: PropTypes.bool,
+  onBtnDoneClick: PropTypes.func,
+  onBtnEditClick: PropTypes.func,
+  onBtnDeleteClick: PropTypes.func,
+}
