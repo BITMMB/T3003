@@ -4,14 +4,14 @@ import Proptypes from 'prop-types'
 
 import TasksFilter from '../TasksFilter'
 
-function Footer({ doneCount, showAllItems, showActiveItems, showDoneItems, onBtnDeleteDoneClick }) {
+function Footer({ doneCount, filter, onBtnDeleteDoneClick }) {
   return (
     <footer className="footer">
       <span className="todo-count">
         {doneCount}
         items left
       </span>
-      <TasksFilter showAllItems={showAllItems} showActiveItems={showActiveItems} showDoneItems={showDoneItems} />
+      <TasksFilter filter={filter} />
       <button
         className="clear-completed"
         onClick={() => {
@@ -25,16 +25,12 @@ function Footer({ doneCount, showAllItems, showActiveItems, showDoneItems, onBtn
 }
 Footer.defaultProps = {
   doneCount: 0,
-  showAllItems: () => {},
-  showActiveItems: () => {},
-  showDoneItems: () => {},
+  filter: () => {},
   onBtnDeleteDoneClick: () => {},
 }
 Footer.propTypes = {
   doneCount: Proptypes.number,
-  showAllItems: Proptypes.func,
-  showActiveItems: Proptypes.func,
-  showDoneItems: Proptypes.func,
+  filter: Proptypes.func,
   onBtnDeleteDoneClick: Proptypes.func,
 }
 

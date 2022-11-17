@@ -28,8 +28,7 @@ export default class TasksFilter extends React.Component {
   }
 
   render() {
-    const { showAllItems, showActiveItems, showDoneItems } = this.props
-
+    const { filter } = this.props
     return (
       <ul className="filters">
         <li>
@@ -37,7 +36,7 @@ export default class TasksFilter extends React.Component {
             id="all"
             className={this.state.all ? 'selected' : ''}
             onClick={(e) => {
-              showAllItems()
+              filter(e)
               this.btnStyleToggle(e)
             }}
           >
@@ -49,7 +48,7 @@ export default class TasksFilter extends React.Component {
             id="active"
             className={this.state.active ? 'selected' : ''}
             onClick={(e) => {
-              showActiveItems()
+              filter(e)
               this.btnStyleToggle(e)
             }}
           >
@@ -61,7 +60,8 @@ export default class TasksFilter extends React.Component {
             id="complited"
             className={this.state.complited ? 'selected' : ''}
             onClick={(e) => {
-              showDoneItems()
+              filter(e)
+
               this.btnStyleToggle(e)
             }}
           >
@@ -73,13 +73,9 @@ export default class TasksFilter extends React.Component {
   }
 }
 TasksFilter.defaultProps = {
-  showAllItems: () => {},
-  showActiveItems: () => {},
-  showDoneItems: () => {},
+  filter: () => {},
 }
 
 TasksFilter.propTypes = {
-  showAllItems: Proptypes.func,
-  showActiveItems: Proptypes.func,
-  showDoneItems: Proptypes.func,
+  filter: Proptypes.func,
 }

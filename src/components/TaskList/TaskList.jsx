@@ -13,15 +13,12 @@ function TaskList({
   onBtnDoneClick,
   onBtnEditClick,
   changeLabel,
-  showAllItems,
-  showActiveItems,
-  showDoneItems,
+  filter,
 }) {
   const element = data.map((item) => (
     <Task
       {...item}
       key={item.id}
-      itemId={item.id}
       onBtnDeleteClick={() => {
         onBtnDeleteClick(item.id)
       }}
@@ -38,13 +35,7 @@ function TaskList({
   return (
     <section className="main">
       <ul className="todo-list">{element}</ul>
-      <Footer
-        doneCount={doneCount}
-        showAllItems={showAllItems}
-        showActiveItems={showActiveItems}
-        showDoneItems={showDoneItems}
-        onBtnDeleteDoneClick={onBtnDeleteDoneClick}
-      />
+      <Footer doneCount={doneCount} filter={filter} onBtnDeleteDoneClick={onBtnDeleteDoneClick} />
     </section>
   )
 }
@@ -57,9 +48,7 @@ TaskList.defaultProps = {
   onBtnDoneClick: () => {},
   onBtnEditClick: () => {},
   changeLabel: () => {},
-  showAllItems: () => {},
-  showActiveItems: () => {},
-  showDoneItems: () => {},
+  filter: () => {},
 }
 
 TaskList.propTypes = {
@@ -70,9 +59,7 @@ TaskList.propTypes = {
   onBtnDoneClick: Proptypes.func,
   onBtnEditClick: Proptypes.func,
   changeLabel: Proptypes.func,
-  showAllItems: Proptypes.func,
-  showActiveItems: Proptypes.func,
-  showDoneItems: Proptypes.func,
+  filter: Proptypes.func,
 }
 
 export default TaskList

@@ -8,6 +8,7 @@ export default class Ttem extends Component {
     super()
     this.state = {
       label: '',
+      classNames: '',
     }
   }
 
@@ -18,47 +19,45 @@ export default class Ttem extends Component {
     })
   }
 
-  render() {
-    const {
-      itemId,
-      label,
-      editing,
-      changeLabel,
-      completed,
-      toggleall,
-      onBtnDoneClick,
-      onBtnEditClick,
-      onBtnDeleteClick,
-    } = this.props
+  onBtnEditClick = () => {
+    this.setState({
+      classNames: 'editing',
+    })
+  }
 
-    let classNames = ''
-    if (toggleall) {
-      classNames = 'toggle-all'
-    } else if (editing) {
-      classNames = 'editing'
-    } else if (completed) {
-      classNames = 'completed'
-    }
+  render() {
+    let { id, time, label, completed, changeLabel, onBtnDoneClick, onBtnDeleteClick } = this.props
 
     return (
-      <li className={classNames}>
+      <li className={completed ? 'completed' : this.state.classNames}>
         <div className="view">
           <input
             className="toggle"
             type="checkbox"
+            checked={completed ? true : false}
+            onChange={() => {
+              onBtnDoneClick
+            }}
             onClick={() => {
               onBtnDoneClick()
             }}
           />
           <label>
-            <span className="description">{label}</span>
+            <button
+              onClick={() => {
+                onBtnDoneClick()
+              }}
+              className="description"
+            >
+              {label}
+            </button>
 
-            <span className="created">{formatDistanceToNow(itemId, { includeSeconds: true })}</span>
+            <span className="created">{formatDistanceToNow(time, { includeSeconds: true })}</span>
           </label>
           <button
             className="icon icon-edit"
             onClick={() => {
-              onBtnEditClick()
+              this.onBtnEditClick()
             }}
           />
           <button
@@ -70,8 +69,12 @@ export default class Ttem extends Component {
         </div>
 
         <form
-          onSubmit={() => {
-            changeLabel(this.state.label, itemId)
+          onSubmit={(e) => {
+            e.preventDefault()
+            this.setState({
+              classNames: '',
+            })
+            changeLabel(this.state.label, id)
           }}
         >
           <input type="text" className="edit" onChange={this.onChange} defaultValue={label} />
@@ -81,24 +84,18 @@ export default class Ttem extends Component {
   }
 }
 Ttem.defaultProps = {
-  itemId: 0,
   label: '',
-  editing: false,
   changeLabel: () => {},
   completed: false,
-  toggleall: false,
   onBtnDoneClick: () => {},
   onBtnEditClick: () => {},
   onBtnDeleteClick: () => {},
 }
 
 Ttem.propTypes = {
-  itemId: PropTypes.number,
   label: PropTypes.string,
-  editing: PropTypes.bool,
   changeLabel: PropTypes.func,
   completed: PropTypes.bool,
-  toggleall: PropTypes.bool,
   onBtnDoneClick: PropTypes.func,
   onBtnEditClick: PropTypes.func,
   onBtnDeleteClick: PropTypes.func,

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-
+import { v4 as uuidv4 } from 'uuid'
 import './App.css'
+
 import NewTaskForm from '../NewTaskForm'
 import TaskList from '../TaskList'
 
@@ -11,43 +12,49 @@ export default class App extends Component {
       data: [
         {
           label: 'Сall friends',
-          done: false,
           completed: false,
-          editing: false,
-          toggleall: false,
-          id: 1667438871000,
+          time: 1667438871001,
+          id: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
         },
         {
           label: 'Have a beer',
-          done: false,
           completed: false,
-          editing: false,
-          toggleall: false,
-          id: 1667538871000,
+          time: 1667538871002,
+          id: '1b9d6bcd-bbfd-4b2d-9b6d-ab8dfbbd4bed',
         },
         {
           label: 'Suffer tomorrow morning',
-          done: false,
           completed: false,
-          editing: false,
-          toggleall: false,
-          id: 1667736871000,
+          time: 1667736871003,
+          id: '1b9d6bcd-bbfd-4b2d-9b4d-ab8dfbbd4bed',
         },
       ],
+
+      filter: { all: true, active: false, complited: false },
     }
+  }
+  /// изменение элемента на сделано
+  onBtnDoneClick = (id) => {
+    this.setState(({ data }) => {
+      let newState = data.map((element) => {
+        if (element.id === id) {
+          return { ...element, completed: !element.completed }
+        }
+        return element
+      })
+      return { data: newState }
+    })
   }
 
   /// добавление нового элемента
   addNewItem = (label) => {
     this.setState(({ data }) => {
-      const newState = JSON.parse(JSON.stringify(data))
+      let newState = [...data]
       newState.push({
         label,
-        done: false,
         completed: false,
-        editing: false,
-        toggleall: false,
-        id: Date.parse(new Date()),
+        id: uuidv4(),
+        time: Date.parse(new Date()),
       })
       return { data: newState }
     })
@@ -55,122 +62,58 @@ export default class App extends Component {
 
   /// удаление элемента
   onBtnDeleteClick = (id) => {
-    this.setState(({ data }) => {
-      let newState = JSON.parse(JSON.stringify(data))
-      newState = newState.filter((element) => element.id !== id)
-      return { data: newState }
-    })
+    this.onBtnDoneClick(id), this.onBtnDeleteDoneClick()
   }
 
   /// удаление выполненных элементов
   onBtnDeleteDoneClick = () => {
     this.setState(({ data }) => {
-      let newState = JSON.parse(JSON.stringify(data))
-      newState = newState.filter((element) => !element.completed)
+      let newState = data.filter((element) => !element.completed)
       return { data: newState }
     })
   }
-
-  /// элемент выполнен
-  onBtnDoneClick = (id) => {
+  ///сабмит отредактированного
+  changeLabel = (label, id) => {
     this.setState(({ data }) => {
-      let newState = JSON.parse(JSON.stringify(data))
-      newState = newState.map((element) => {
+      let newState = data.map((element) => {
         if (element.id === id) {
-          const exit = Object.assign(element)
-          exit.completed = !element.completed
-          return exit
+          return { ...element, label: label }
         }
         return element
       })
       return { data: newState }
     })
   }
-
-  /// редактирование элемента
-  onBtnEditClick = (id) => {
-    this.setState(({ data }) => {
-      let newState = JSON.parse(JSON.stringify(data))
-      newState = newState.map((element) => {
-        if (element.id === id) {
-          const exit = Object.assign(element)
-          exit.editing = !element.editing
-          return exit
+  ///фильтр нижних кнопок
+  filter = (e) => {
+    const { id } = e.target
+    this.setState(() => {
+      const newState = this.state.filter
+      for (const g in newState) {
+        newState[g] = false
+        if (g === id) {
+          newState[id] = true
         }
-        return element
-      })
-      return { data: newState }
-    })
-  }
-
-  // сабмит отредактированного
-  changeLabel = (label, itemId) => {
-    this.setState(({ data }) => {
-      let newState = JSON.parse(JSON.stringify(data))
-      newState = newState.map((element) => {
-        if (element.id === itemId) {
-          const exit = Object.assign(element)
-          exit.label = label
-          exit.editing = !element.editing
-          return exit
-        }
-        return element
-      })
-      return { data: newState }
-    })
-  }
-
-  /// показать все элементы
-  showAllItems = () => {
-    this.setState(({ data }) => {
-      let newState = JSON.parse(JSON.stringify(data))
-      newState = newState.map((element) => {
-        const exit = Object.assign(element)
-        exit.toggleall = false
-        return exit
-      })
-      return { data: newState }
-    })
-  }
-
-  /// показать активные элементы
-  showActiveItems = () => {
-    this.setState(({ data }) => {
-      let newState = JSON.parse(JSON.stringify(data))
-      newState = newState.map((element) => {
-        const exit = Object.assign(element)
-        if (element.completed) {
-          exit.toggleall = true
-          return exit
-        }
-        exit.toggleall = false
-        return exit
-      })
-      return { data: newState }
-    })
-  }
-
-  /// показать выполненные элементы
-  showDoneItems = () => {
-    this.setState(({ data }) => {
-      let newState = JSON.parse(JSON.stringify(data))
-      newState = newState.map((element) => {
-        const exit = Object.assign(element)
-        if (!element.completed) {
-          exit.toggleall = true
-          return exit
-        }
-        exit.toggleall = false
-        return exit
-      })
-      return { data: newState }
+      }
+      return newState
     })
   }
 
   render() {
     /// счетчик количества не выполненных
-    const { data } = this.state
-    const doneCount = data.length - data.filter((el) => el.completed).length
+    let data = this.state.data
+    const doneCount = data.filter((el) => !el.completed).length
+
+    ///фильтр нижних кнопок
+    data = data.filter((element) => {
+      if (this.state.filter.complited && element.completed) {
+        return true
+      } else if (this.state.filter.active && !element.completed) {
+        return true
+      } else if (this.state.filter.all) {
+        return true
+      }
+    })
 
     return (
       <div className="todoapp">
@@ -183,9 +126,7 @@ export default class App extends Component {
           onBtnDoneClick={this.onBtnDoneClick}
           onBtnEditClick={this.onBtnEditClick}
           changeLabel={this.changeLabel}
-          showAllItems={this.showAllItems}
-          showActiveItems={this.showActiveItems}
-          showDoneItems={this.showDoneItems}
+          filter={this.filter}
         />
       </div>
     )
