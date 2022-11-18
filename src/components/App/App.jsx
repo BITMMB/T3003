@@ -62,7 +62,10 @@ export default class App extends Component {
 
   /// удаление элемента
   onBtnDeleteClick = (id) => {
-    this.onBtnDoneClick(id), this.onBtnDeleteDoneClick()
+    this.setState(({ data }) => {
+      let newState = data.filter((element) => element.id !== id)
+      return { data: newState }
+    })
   }
 
   /// удаление выполненных элементов
