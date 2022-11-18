@@ -79,6 +79,9 @@ export default class App extends Component {
   changeLabel = (label, id) => {
     this.setState(({ data }) => {
       let newState = data.map((element) => {
+        if (label.length == 0) {
+          return element
+        }
         if (element.id === id) {
           return { ...element, label: label }
         }
