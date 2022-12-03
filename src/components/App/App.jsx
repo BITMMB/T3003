@@ -10,24 +10,24 @@ export default class App extends Component {
     super()
     this.state = {
       data: [
-        {
-          label: 'Сall friends',
-          completed: false,
-          time: 1667438871001,
-          id: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
-        },
-        {
-          label: 'Have a beer',
-          completed: false,
-          time: 1667538871002,
-          id: '1b9d6bcd-bbfd-4b2d-9b6d-ab8dfbbd4bed',
-        },
-        {
-          label: 'Suffer tomorrow morning',
-          completed: false,
-          time: 1667736871003,
-          id: '1b9d6bcd-bbfd-4b2d-9b4d-ab8dfbbd4bed',
-        },
+        // {
+        //   label: 'Сall friends',
+        //   completed: false,
+        //   time: 1667438871001,
+        //   id: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
+        // },
+        // {
+        //   label: 'Have a beer',
+        //   completed: false,
+        //   time: 1667538871002,
+        //   id: '1b9d6bcd-bbfd-4b2d-9b6d-ab8dfbbd4bed',
+        // },
+        // {
+        //   label: 'Suffer tomorrow morning',
+        //   completed: false,
+        //   time: 1667736871003,
+        //   id: '1b9d6bcd-bbfd-4b2d-9b4d-ab8dfbbd4bed',
+        // },
       ],
 
       filter: { all: true, active: false, complited: false },
@@ -47,7 +47,7 @@ export default class App extends Component {
   }
 
   /// добавление нового элемента
-  addNewItem = (label) => {
+  addNewItem = (label, m, s) => {
     this.setState(({ data }) => {
       let newState = [...data]
       newState.push({
@@ -55,6 +55,8 @@ export default class App extends Component {
         completed: false,
         id: uuidv4(),
         time: Date.parse(new Date()),
+        min: m,
+        sec: s,
       })
       return { data: newState }
     })
@@ -80,7 +82,7 @@ export default class App extends Component {
     this.setState(({ data }) => {
       let newState = data.map((element) => {
         if (label.length == 0) {
-          return element
+          return element()
         }
         if (element.id === id) {
           return { ...element, label: label }
