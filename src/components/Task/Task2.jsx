@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Task.css'
 import PropTypes from 'prop-types'
-import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow, format } from 'date-fns'
 
 export default class Ttem extends Component {
   constructor() {
@@ -11,31 +11,31 @@ export default class Ttem extends Component {
       classNames: '',
       timerTurn: false,
       timerSec: 0,
-      timerMin: 0,
     }
   }
 
+  // timerSec: new Date().setMinutes(this.props.min, this.props.sec),
   timerStart(e) {
+    console.log(this.props.min)
     if (e === 1) {
-      this.setState(() => {
-        return { timerTurn: true }
-      }, this.componentDidMount)
+      this.setState({ timerTurn: true })
+      console.log(this.state.timerTurn)
     } else if (e === 2) {
-      this.setState(() => {
-        return { timerTurn: false }
-      }, clearInterval(this.timerID))
+      this.setState({ timerTurn: false })
+      console.log(this.state.timerTurn)
     }
   }
 
   componentDidMount() {
     if (this.state.timerSec == 0) {
       this.setState(() => {
-        return { timerSec: this.props.sec, timerMin: this.props.min }
+        return { timerSec: new Date().setMinutes(this.props.min, this.props.sec) }
       })
     }
     if (!this.state.timerTurn) {
       return
     }
+
     this.timerID = setInterval(() => this.tick(), 1000)
   }
   componentWillUnmount() {
@@ -43,20 +43,9 @@ export default class Ttem extends Component {
   }
 
   tick() {
-    let min
-    let sec
-    if (this.state.timerSec == 0 && this.state.timerMin !== 0) {
-      min = this.state.timerMin - 1
-      sec = 59
-    } else if (this.state.timerSec == 0 && this.state.timerMin == 0) {
-      return
-    } else {
-      min = this.state.timerMin
-      sec = this.state.timerSec - 1
-    }
+    let sec = this.state.timerSec - 1000
     this.setState({
       timerSec: sec,
-      timerMin: min,
     })
   }
 
@@ -113,9 +102,7 @@ export default class Ttem extends Component {
                     this.timerStart(2)
                   }}
                 ></button>
-                {`${this.state.timerMin.toString().padStart(2, '0')}:${this.state.timerSec
-                  .toString()
-                  .padStart(2, '0')}`}
+                {format(this.state.timerSec, 'm:ss')}
               </span>
               <span className="created">{formatDistanceToNow(time, { includeSeconds: true })}</span>
             </div>
