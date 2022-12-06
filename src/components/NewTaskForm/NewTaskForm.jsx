@@ -36,7 +36,7 @@ export default class NewTaskForm extends React.Component {
       let m = Number(min.trim())
       let s = Number(sec.trim())
       let regexp = /\d*\d/
-      if (str.length == 0 || !regexp.test(m) || !regexp.test(s) || m > 59 || s > 59) {
+      if (str.length == 0 || !regexp.test(m) || !regexp.test(s) || m > 59 || m < 0 || s > 59 || s < 0) {
         return
       } else if (label) this.props.addNewItem(str, m, s)
       this.setState({
