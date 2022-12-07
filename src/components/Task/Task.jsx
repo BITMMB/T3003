@@ -28,7 +28,7 @@ export default class Ttem extends Component {
   }
 
   render() {
-    let { id, time, min, sec, label, completed, changeLabel, onBtnDoneClick, onBtnDeleteClick } = this.props
+    let { id, time, min, sec, label, completed, changeTime, changeLabel, onBtnDoneClick, onBtnDeleteClick } = this.props
 
     return (
       <li className={completed ? 'completed' : this.state.classNames}>
@@ -54,7 +54,7 @@ export default class Ttem extends Component {
               {label}
             </button>
             <div className="timer-date">
-              <Timer min={min} sec={sec} completed={completed} />
+              <Timer min={min} sec={sec} completed={completed} id={id} changeTime={changeTime} />
               <span className="created">{formatDistanceToNow(time, { includeSeconds: true })}</span>
             </div>
           </label>

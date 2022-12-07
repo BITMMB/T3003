@@ -58,6 +58,7 @@ export default class Timer extends Component {
       timerSec: sec,
       timerMin: min,
     })
+    this.props.changeTime(min, sec, this.props.id)
   }
 
   render() {

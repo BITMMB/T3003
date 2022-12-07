@@ -8,6 +8,7 @@ import TaskList from '../TaskList'
 export default class App extends Component {
   constructor() {
     super()
+
     this.state = {
       data: [
         // {
@@ -33,6 +34,19 @@ export default class App extends Component {
       filter: { all: true, active: false, complited: false },
     }
   }
+
+  changeTime = (minN, secN, id) => {
+    this.setState(({ data }) => {
+      let newState = data.map((element) => {
+        if (element.id === id) {
+          return { ...element, min: minN, sec: secN }
+        }
+        return element
+      })
+      return { data: newState }
+    })
+  }
+
   /// изменение элемента на сделано
   onBtnDoneClick = (id) => {
     this.setState(({ data }) => {
@@ -129,6 +143,7 @@ export default class App extends Component {
         <TaskList
           data={data}
           doneCount={doneCount}
+          changeTime={this.changeTime}
           onBtnDeleteClick={this.onBtnDeleteClick}
           onBtnDeleteDoneClick={this.onBtnDeleteDoneClick}
           onBtnDoneClick={this.onBtnDoneClick}
