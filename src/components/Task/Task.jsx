@@ -1,89 +1,82 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import './Task.css'
 import PropTypes from 'prop-types'
 import { formatDistanceToNow } from 'date-fns'
 
-export default class Ttem extends Component {
-  constructor() {
-    super()
-    this.state = {
-      label: '',
-      classNames: '',
-    }
-  }
+import Timer from '../Timer/Timer'
 
-  onChange = (e) => {
+function Task({ id, time, min, sec, label, completed, changeTime, changeLabel, onBtnDoneClick, onBtnDeleteClick }) {
+  const [text, setText] = useState(label)
+  const [classNames, setClassNames] = useState('')
+
+  const onChange = (e) => {
     e.preventDefault()
-    this.setState({
-      label: e.target.value,
-    })
+    setText(e.target.value)
   }
 
-  onBtnEditClick = () => {
-    this.setState({
-      classNames: 'editing',
-    })
+  const onBtnEditClick = () => {
+    setClassNames('editing')
   }
-
-  render() {
-    let { id, time, label, completed, changeLabel, onBtnDoneClick, onBtnDeleteClick } = this.props
-
-    return (
-      <li className={completed ? 'completed' : this.state.classNames}>
-        <div className="view">
-          <input
-            className="toggle"
-            type="checkbox"
-            checked={completed ? true : false}
-            onChange={() => {
-              onBtnDoneClick
-            }}
+  return (
+    <li className={completed ? 'completed' : classNames}>
+      <div className="view">
+        <input
+          className="toggle"
+          type="checkbox"
+          checked={completed ? true : false}
+          onChange={() => {
+            onBtnDoneClick
+          }}
+          onClick={() => {
+            onBtnDoneClick()
+          }}
+        />
+        <label className="label">
+          <button
             onClick={() => {
               onBtnDoneClick()
             }}
-          />
-          <label>
-            <button
-              onClick={() => {
-                onBtnDoneClick()
-              }}
-              className="description"
-            >
-              {label}
-            </button>
-
+            className="description"
+          >
+            {text}
+          </button>
+          <div className="timer-date">
+            <Timer min={min} sec={sec} completed={completed} id={id} changeTime={changeTime} />
             <span className="created">{formatDistanceToNow(time, { includeSeconds: true })}</span>
-          </label>
-          <button
-            className="icon icon-edit"
-            onClick={() => {
-              this.onBtnEditClick()
-            }}
-          />
-          <button
-            className="icon icon-destroy"
-            onClick={() => {
-              onBtnDeleteClick()
-            }}
-          />
-        </div>
+          </div>
+        </label>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            this.setState({
-              classNames: '',
-            })
-            changeLabel(this.state.label, id)
+        <button
+          className="icon icon-edit"
+          onClick={() => {
+            onBtnEditClick()
           }}
-        >
-          <input type="text" className="edit" onChange={this.onChange} defaultValue={label} />
-        </form>
-      </li>
-    )
-  }
+        />
+        <button
+          className="icon icon-destroy"
+          onClick={() => {
+            onBtnDeleteClick()
+          }}
+        />
+      </div>
+
+      <form
+        onSubmit={(e) => {
+          console.log(text)
+          e.preventDefault()
+          setClassNames('')
+          changeLabel(text, id)
+        }}
+      >
+        <input type="text" className="edit" onChange={onChange} defaultValue={label} />
+      </form>
+    </li>
+  )
 }
-Ttem.defaultProps = {
+
+export default Task
+
+Task.defaultProps = {
   label: '',
   changeLabel: () => {},
   completed: false,
@@ -92,7 +85,7 @@ Ttem.defaultProps = {
   onBtnDeleteClick: () => {},
 }
 
-Ttem.propTypes = {
+Task.propTypes = {
   label: PropTypes.string,
   changeLabel: PropTypes.func,
   completed: PropTypes.bool,

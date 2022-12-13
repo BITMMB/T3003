@@ -7,6 +7,7 @@ import Footer from '../Footer'
 
 function TaskList({
   data,
+  changeTime,
   doneCount,
   onBtnDeleteClick,
   onBtnDeleteDoneClick,
@@ -18,6 +19,7 @@ function TaskList({
   const element = data.map((item) => (
     <Task
       {...item}
+      changeTime={changeTime}
       key={item.id}
       onBtnDeleteClick={() => {
         onBtnDeleteClick(item.id)

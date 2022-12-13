@@ -1,46 +1,60 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './NewTaskForm.css'
 import Proptypes from 'prop-types'
 
-export default class NewTaskForm extends React.Component {
-  state = {
-    label: '',
-  }
+function NewTaskForm({ addNewItem }) {
+  const [label, setLabel] = useState('')
+  const [min, setMin] = useState('')
+  const [sec, setSec] = useState('')
 
-  onChange = (e) => {
+  const onChange = (e) => {
     e.preventDefault()
-    this.setState({
-      label: e.target.value,
-    })
+    setLabel(e.target.value)
   }
-
-  onSubmit = (e) => {
+  const onChangeMin = (e) => {
     e.preventDefault()
-    let str = this.state.label.trim()
-    if (str.length == 0) {
-      return
-    } else if (this.state.label) this.props.addNewItem(this.state.label)
-    this.setState({
-      label: '',
-    })
+    setMin(e.target.value)
+  }
+  const onChangeSec = (e) => {
+    e.preventDefault()
+    setSec(e.target.value)
   }
 
-  render() {
-    return (
-      <header className="header">
-        <h1>todos</h1>
-        <form onSubmit={this.onSubmit}>
-          <input
-            onChange={this.onChange}
-            className="new-todo"
-            placeholder="What needs to be done?"
-            value={this.state.label}
-          />
-        </form>
-      </header>
-    )
+  const onSubmit = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      let str = label.trim()
+      let m = Number(min.trim())
+      let s = Number(sec.trim())
+      let regexp = /\d*\d/
+      if (str.length == 0 || !regexp.test(m) || !regexp.test(s) || m > 59 || m < 0 || s > 59 || s < 0) {
+        return
+      } else if (label) addNewItem(str, m, s)
+      setLabel('')
+      setMin('')
+      setSec('')
+    }
   }
+
+  return (
+    <header className="header">
+      <h1>todos</h1>
+      <form onKeyUp={onSubmit} onSubmit={onSubmit} className="new-todo-form">
+        <input
+          onChange={onChange}
+          className="new-todo"
+          placeholder="What needs to be done?"
+          value={label}
+          name={'label'}
+        />
+
+        <input onChange={onChangeMin} value={min} className="new-todo-form__timer" placeholder="Min" name={'min'} />
+        <input onChange={onChangeSec} value={sec} className="new-todo-form__timer" placeholder="Sec" name={'sec'} />
+      </form>
+    </header>
+  )
 }
+export default NewTaskForm
 NewTaskForm.defaultProps = {
   addNewItem: () => {},
 }
