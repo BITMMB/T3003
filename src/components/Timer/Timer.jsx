@@ -1,83 +1,69 @@
-import React, { Component } from 'react'
-export default class Timer extends Component {
-  constructor() {
-    super()
-    this.state = {
-      timerTurn: false,
-      timerSec: 0,
-      timerMin: 0,
-    }
-  }
+import React, { useEffect, useState } from 'react'
 
-  timerStart(e) {
-    if (e === 1 && !this.props.completed) {
-      this.setState(() => {
-        return { timerTurn: true }
-      }, this.componentDidMount)
+function Timer({ min, sec, completed, changeTime, id }) {
+  const [timerTurn, setTimerTurn] = useState(false)
+  const [timerSec, setTimerSec] = useState(0)
+  const [timerMin, setTimerMin] = useState(0)
+  let timerID
+
+  const timerStart = (e) => {
+    if (e === 1 && !completed) {
+      setTimerTurn(true)
     } else if (e === 2) {
-      this.setState(() => {
-        return { timerTurn: false }
-      }, clearInterval(this.timerID))
+      setTimerTurn(false), clearInterval(timerID)
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.completed && this.state.timerTurn) {
-      this.timerStart(2)
+  useEffect(() => {
+    if (completed && timerTurn) {
+      timerStart(2)
     }
-  }
-
-  componentDidMount() {
-    if (this.state.timerSec == 0) {
-      this.setState(() => {
-        return { timerSec: this.props.sec, timerMin: this.props.min }
-      })
+    if (timerSec == 0) {
+      setTimerSec(sec)
+      setTimerMin(min)
     }
-    if (!this.state.timerTurn) {
+    if (!timerTurn) {
       return
     }
-    this.timerID = setInterval(() => this.tick(), 1000)
-  }
-  componentWillUnmount() {
-    clearInterval(this.timerID)
-  }
+    timerID = setInterval(() => tick(), 1000)
+    return () => {
+      clearInterval(timerID)
+    }
+  })
 
-  tick() {
+  const tick = () => {
     let min
     let sec
-    if (this.state.timerSec == 0 && this.state.timerMin !== 0) {
-      min = this.state.timerMin - 1
+    if (timerSec == 0 && timerMin !== 0) {
+      min = timerMin - 1
       sec = 59
-    } else if (this.state.timerSec == 0 && this.state.timerMin == 0) {
+    } else if (timerSec == 0 && timerMin == 0) {
       return
     } else {
-      min = this.state.timerMin
-      sec = this.state.timerSec - 1
+      min = timerMin
+      sec = timerSec - 1
     }
-    this.setState({
-      timerSec: sec,
-      timerMin: min,
-    })
-    this.props.changeTime(min, sec, this.props.id)
+    setTimerSec(sec)
+    setTimerMin(min)
+    changeTime(min, sec, id)
   }
 
-  render() {
-    return (
-      <span className="timer">
-        <button
-          className="icon icon-play"
-          onClick={() => {
-            this.timerStart(1)
-          }}
-        ></button>
-        <button
-          className="icon icon-pause"
-          onClick={() => {
-            this.timerStart(2)
-          }}
-        ></button>
-        {`${this.state.timerMin.toString().padStart(2, '0')}:${this.state.timerSec.toString().padStart(2, '0')}`}
-      </span>
-    )
-  }
+  return (
+    <span className="timer">
+      <button
+        className="icon icon-play"
+        onClick={() => {
+          timerStart(1)
+        }}
+      ></button>
+      <button
+        className="icon icon-pause"
+        onClick={() => {
+          timerStart(2)
+        }}
+      ></button>
+      {`${timerMin.toString().padStart(2, '0')}:${timerSec.toString().padStart(2, '0')}`}
+    </span>
+  )
 }
+export default Timer

@@ -1,50 +1,68 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import './App.css'
 
 import NewTaskForm from '../NewTaskForm'
 import TaskList from '../TaskList'
 
-export default class App extends Component {
-  constructor() {
-    super()
+function App() {
+  const [data, setData] = useState([])
+  const [dataFilter, setDataFilter] = useState([])
+  const [filterAll, setFilterAll] = useState(true)
+  const [filterActive, setFilterActive] = useState(false)
+  const [filterComplited, setFilterComplited] = useState(false)
 
-    this.state = {
-      data: [],
+  let newState1 = []
+  useEffect(() => {
+    dFilter(data)
+  }, [data, filterAll, filterActive, filterComplited])
 
-      filter: { all: true, active: false, complited: false },
-    }
+  const dFilter = (data) => {
+    setDataFilter(() => {
+      newState1 = data.filter((element) => {
+        if (filterComplited && element.completed) {
+          return true
+        } else if (filterActive && !element.completed) {
+          return true
+        } else if (filterAll) {
+          return true
+        }
+      })
+      return newState1
+    })
   }
 
-  changeTime = (minN, secN, id) => {
-    this.setState(({ data }) => {
+  const changeTime = (minN, secN, id) => {
+    setData(() => {
       let newState = data.map((element) => {
         if (element.id === id) {
           return { ...element, min: minN, sec: secN }
         }
         return element
       })
-      return { data: newState }
+      return newState
     })
   }
 
   /// изменение элемента на сделано
-  onBtnDoneClick = (id) => {
-    this.setState(({ data }) => {
+  const onBtnDoneClick = (id) => {
+    setData(() => {
       let newState = data.map((element) => {
         if (element.id === id) {
           return { ...element, completed: !element.completed }
         }
         return element
       })
-      return { data: newState }
+      return newState
     })
   }
 
   /// добавление нового элемента
-  addNewItem = (label, m, s) => {
-    this.setState(({ data }) => {
-      let newState = [...data]
+
+  const addNewItem = (label, m, s) => {
+    let newState
+    setData(() => {
+      newState = [...data]
       newState.push({
         label,
         completed: false,
@@ -53,28 +71,28 @@ export default class App extends Component {
         min: m,
         sec: s,
       })
-      return { data: newState }
+
+      return newState
     })
   }
-
   /// удаление элемента
-  onBtnDeleteClick = (id) => {
-    this.setState(({ data }) => {
+  const onBtnDeleteClick = (id) => {
+    setData(() => {
       let newState = data.filter((element) => element.id !== id)
-      return { data: newState }
+      return newState
     })
   }
 
   /// удаление выполненных элементов
-  onBtnDeleteDoneClick = () => {
-    this.setState(({ data }) => {
+  const onBtnDeleteDoneClick = () => {
+    setData(() => {
       let newState = data.filter((element) => !element.completed)
-      return { data: newState }
+      return newState
     })
   }
   ///сабмит отредактированного
-  changeLabel = (label, id) => {
-    this.setState(({ data }) => {
+  const changeLabel = (label, id) => {
+    setData(() => {
       let newState = data.map((element) => {
         if (label.length == 0) {
           return element()
@@ -84,55 +102,43 @@ export default class App extends Component {
         }
         return element
       })
-      return { data: newState }
-    })
-  }
-  ///фильтр нижних кнопок
-  filter = (e) => {
-    const { id } = e.target
-    this.setState(() => {
-      const newState = this.state.filter
-      for (const g in newState) {
-        newState[g] = false
-        if (g === id) {
-          newState[id] = true
-        }
-      }
       return newState
     })
   }
 
-  render() {
-    /// счетчик количества не выполненных
-    let data = this.state.data
-    const doneCount = data.filter((el) => !el.completed).length
-
-    ///фильтр нижних кнопок
-    data = data.filter((element) => {
-      if (this.state.filter.complited && element.completed) {
-        return true
-      } else if (this.state.filter.active && !element.completed) {
-        return true
-      } else if (this.state.filter.all) {
-        return true
-      }
-    })
-
-    return (
-      <div className="todoapp">
-        <NewTaskForm addNewItem={this.addNewItem} />
-        <TaskList
-          data={data}
-          doneCount={doneCount}
-          changeTime={this.changeTime}
-          onBtnDeleteClick={this.onBtnDeleteClick}
-          onBtnDeleteDoneClick={this.onBtnDeleteDoneClick}
-          onBtnDoneClick={this.onBtnDoneClick}
-          onBtnEditClick={this.onBtnEditClick}
-          changeLabel={this.changeLabel}
-          filter={this.filter}
-        />
-      </div>
-    )
+  const filter = (e) => {
+    const { id } = e.target
+    switch (id) {
+      case 'all':
+        setFilterAll(true), setFilterActive(false), setFilterComplited(false)
+        break
+      case 'active':
+        setFilterAll(false), setFilterActive(true), setFilterComplited(false)
+        break
+      case 'complited':
+        setFilterAll(false), setFilterActive(false), setFilterComplited(true)
+        break
+    }
   }
+
+  /// счетчик количества не выполненных
+
+  const doneCount = data.filter((el) => !el.completed).length
+
+  return (
+    <div className="todoapp">
+      <NewTaskForm addNewItem={addNewItem} />
+      <TaskList
+        data={dataFilter}
+        doneCount={doneCount}
+        changeTime={changeTime}
+        onBtnDeleteClick={onBtnDeleteClick}
+        onBtnDeleteDoneClick={onBtnDeleteDoneClick}
+        onBtnDoneClick={onBtnDoneClick}
+        changeLabel={changeLabel}
+        filter={filter}
+      />
+    </div>
+  )
 }
+export default App
