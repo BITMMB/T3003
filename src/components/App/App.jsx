@@ -10,26 +10,7 @@ export default class App extends Component {
     super()
 
     this.state = {
-      data: [
-        // {
-        //   label: 'Сall friends',
-        //   completed: false,
-        //   time: 1667438871001,
-        //   id: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
-        // },
-        // {
-        //   label: 'Have a beer',
-        //   completed: false,
-        //   time: 1667538871002,
-        //   id: '1b9d6bcd-bbfd-4b2d-9b6d-ab8dfbbd4bed',
-        // },
-        // {
-        //   label: 'Suffer tomorrow morning',
-        //   completed: false,
-        //   time: 1667736871003,
-        //   id: '1b9d6bcd-bbfd-4b2d-9b4d-ab8dfbbd4bed',
-        // },
-      ],
+      data: [],
 
       filter: { all: true, active: false, complited: false },
     }
