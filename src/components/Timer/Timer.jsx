@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-function Timer({ min, sec, completed, changeTime, id }) {
+function Timer({ msec, completed, changeTime, id }) {
   const [timerTurn, setTimerTurn] = useState(false)
-  const [timerSec, setTimerSec] = useState(0)
-  const [timerMin, setTimerMin] = useState(0)
+  const [timerMilisec, setTimerMilisec] = useState(0)
   let timerID
-
   const timerStart = (e) => {
     if (e === 1 && !completed) {
       setTimerTurn(true)
@@ -18,9 +16,8 @@ function Timer({ min, sec, completed, changeTime, id }) {
     if (completed && timerTurn) {
       timerStart(2)
     }
-    if (timerSec == 0) {
-      setTimerSec(sec)
-      setTimerMin(min)
+    if (timerMilisec == 0) {
+      setTimerMilisec(msec)
     }
     if (!timerTurn) {
       return
@@ -31,21 +28,21 @@ function Timer({ min, sec, completed, changeTime, id }) {
     }
   })
 
+  function millisToMinutesAndSeconds(millis) {
+    var minutes = Math.floor(millis / 60000)
+    var seconds = ((millis % 60000) / 1000).toFixed(0)
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds
+  }
+
   const tick = () => {
-    let min
-    let sec
-    if (timerSec == 0 && timerMin !== 0) {
-      min = timerMin - 1
-      sec = 59
-    } else if (timerSec == 0 && timerMin == 0) {
+    if (timerMilisec == 0) {
       return
     } else {
-      min = timerMin
-      sec = timerSec - 1
+      setTimerMilisec(() => {
+        return timerMilisec - 1000
+      })
     }
-    setTimerSec(sec)
-    setTimerMin(min)
-    changeTime(min, sec, id)
+    changeTime(timerMilisec - 1000, id)
   }
 
   return (
@@ -62,7 +59,7 @@ function Timer({ min, sec, completed, changeTime, id }) {
           timerStart(2)
         }}
       ></button>
-      {`${timerMin.toString().padStart(2, '0')}:${timerSec.toString().padStart(2, '0')}`}
+      {millisToMinutesAndSeconds(timerMilisec)}
     </span>
   )
 }

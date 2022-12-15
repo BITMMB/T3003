@@ -5,7 +5,7 @@ import { formatDistanceToNow } from 'date-fns'
 
 import Timer from '../Timer/Timer'
 
-function Task({ id, time, min, sec, label, completed, changeTime, changeLabel, onBtnDoneClick, onBtnDeleteClick }) {
+function Task({ id, time, msec, label, completed, changeTime, changeLabel, onBtnDoneClick, onBtnDeleteClick }) {
   const [text, setText] = useState(label)
   const [classNames, setClassNames] = useState('')
 
@@ -41,7 +41,7 @@ function Task({ id, time, min, sec, label, completed, changeTime, changeLabel, o
             {text}
           </button>
           <div className="timer-date">
-            <Timer min={min} sec={sec} completed={completed} id={id} changeTime={changeTime} />
+            <Timer msec={msec} completed={completed} id={id} changeTime={changeTime} />
             <span className="created">{formatDistanceToNow(time, { includeSeconds: true })}</span>
           </div>
         </label>
@@ -62,7 +62,6 @@ function Task({ id, time, min, sec, label, completed, changeTime, changeLabel, o
 
       <form
         onSubmit={(e) => {
-          console.log(text)
           e.preventDefault()
           setClassNames('')
           changeLabel(text, id)
